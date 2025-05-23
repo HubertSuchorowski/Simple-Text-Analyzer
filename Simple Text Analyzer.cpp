@@ -1,20 +1,76 @@
-﻿// Simple Text Analyzer.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
+﻿#include <iostream>
+#include <string> 
+#include <limits>
+#include <cctype>
 
-#include <iostream>
+void printWelcome()
+{
+    std::cout << "Welcome to the Simple Text Analyzer!\n";
+    std::cout << "This program will analyze the text you provide and give you some statistics about it.\n";
+}
+
+void getText(std::string& text)
+{
+	std::cout << "Please enter the text you want to analyze (type 'exit' to quit):\n";
+	std::getline(std::cin, text);
+}
+
+void analyzeText(const std::string& text, int& letterCount, int& digitCount, int& gapCount) {
+	if(text == "exit"){
+		std::cout << "Exiting the program.\n";
+		exit(0);
+	}
+	else {
+		if (text.empty()) {
+			std::cout << "No text provided.\n";
+			return;
+		}
+		else {
+			for(char ch : text) {
+				if (std::isalpha(ch)) {
+					letterCount++;
+				}
+				else if (std::isdigit(ch)) {
+					digitCount++;
+				}
+				else if (std::isspace(ch)) {
+					gapCount++;
+				}
+			}
+			std::cout << "Analysis Results:\n";
+			std::cout << "Number of letters: " << letterCount << "\n";
+			std::cout << "Number of digits: " << digitCount << "\n";
+			std::cout << "Number of gap marks: " << gapCount << "\n";
+			std::cout << "Total characters: " << text.length() << "\n";
+		} 
+	}
+}
+
+
+
+void askContinue(std::string& continueChoice)
+{
+	std::cout << "Do you want to analyze another text? (yes/no): ";
+	std::cin >> continueChoice;
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	
+	std::string text;
+	int letterCount = 0;
+	int digitCount = 0;
+	int gapsCount = 0;
+	std::string continueChoice;
+
+
+	printWelcome();
+	do
+	{
+		getText(text);
+		analyzeText(text, letterCount, digitCount, gapsCount);
+		askContinue(continueChoice);
+	} while (continueChoice == "y" || continueChoice == "Y");
 }
 
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
-
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln
